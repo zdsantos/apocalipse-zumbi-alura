@@ -2,26 +2,29 @@ using UnityEngine;
 
 public class ZumbiController : MonoBehaviour
 {
-    public GameObject player;
-    public float walkingSpeed = 1.2f;
-    public float visionRange = 25;
+    public GameObject Player;
+    public float ValkingSpeed = 1.2f;
+    public float VisionRange = 25;
 
-    private ZumbiStatus _status;
+    private Rigidbody rb;
+    private Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        _status = ZumbiStatus.Idle;
-        walkingSpeed = Random.Range(1.2f, 4f);
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+
+        ValkingSpeed = Random.Range(1.2f, 4f);
 
         // build a runner, rate 10%
         if(Random.Range(1, 100) <= 10)
         {
             Debug.Log("RUNNER!!!");
-            walkingSpeed += 2;
+            ValkingSpeed += 2;
         }
 
-        player = GameObject.FindWithTag("Player");
+        Player = GameObject.FindWithTag("Player");
 
         int type = Random.Range(1, 28);
         transform.GetChild(type).gameObject.SetActive(true);
@@ -35,19 +38,19 @@ public class ZumbiController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var playerDistance = Vector3.Distance(transform.position, player.transform.position);
-        var playerDirection = (player.transform.position - transform.position).normalized;
+        var playerDistance = Vector3.Distance(transform.position, Player.transform.position);
+        var playerDirection = (Player.transform.position - transform.position).normalized;
 
         var directionRotation = Quaternion.LookRotation(playerDirection);
-        GetComponent<Rigidbody>().MoveRotation(directionRotation);
+        rb.MoveRotation(directionRotation);
 
-        if (playerDistance > visionRange)
+        if (playerDistance > VisionRange)
         {
             SetStatus(ZumbiStatus.Idle);
         }
         else if (playerDistance > 3)
         {
-            GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + (playerDirection * walkingSpeed * Time.deltaTime));
+            rb.MovePosition(rb.position + (playerDirection * ValkingSpeed * Time.deltaTime));
             SetStatus(ZumbiStatus.Walking);
         }
         else
@@ -59,13 +62,12 @@ public class ZumbiController : MonoBehaviour
     void AttackPlayer()
     {
         Time.timeScale = 0;
-        player.GetComponent<PlayerController>().GameOver(1);
+        Player.GetComponent<PlayerController>().GameOver(1);
     }
 
     private void SetStatus(ZumbiStatus status)
     {
-        _status = status;
-        GetComponent<Animator>().SetInteger("Zumbi_Status", ((int)status));
+        animator.SetInteger("Zumbi_Status", ((int)status));
     }
 
     enum ZumbiStatus

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GunController : MonoBehaviour
 {
-    [SerializeField] public GameObject Bullet;
-    [SerializeField] public GameObject BulletSpawn;
+    public GameObject Bullet;
+    public GameObject BulletSpawn;
 
     // Start is called before the first frame update
     void Start()

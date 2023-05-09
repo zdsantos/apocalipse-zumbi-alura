@@ -1,21 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public GameObject player;
-    private Vector3 _playerDistance;
+    public GameObject Player;
+    private Vector3 playerDistance;
 
     // Start is called before the first frame update
     void Start()
     {
-        _playerDistance = transform.position - player.transform.position;
+        playerDistance = transform.position - Player.transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position + _playerDistance;
+        transform.position = Player.transform.position + playerDistance;
     }
 }
