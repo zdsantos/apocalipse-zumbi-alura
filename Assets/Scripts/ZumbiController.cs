@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ZumbiController : MonoBehaviour
@@ -13,6 +11,7 @@ public class ZumbiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _status = ZumbiStatus.Idle;
         walkingSpeed = Random.Range(1.2f, 4f);
 
         // build a runner, rate 10%
@@ -23,6 +22,9 @@ public class ZumbiController : MonoBehaviour
         }
 
         player = GameObject.FindWithTag("Player");
+
+        int type = Random.Range(1, 28);
+        transform.GetChild(type).gameObject.SetActive(true);
     }
 
     // Update is called once per frame
