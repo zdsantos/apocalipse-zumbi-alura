@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
-    public float ExplosionForce = 0.01f;
+    public float ExplosionForce = 0.04f;
 
     private Rigidbody rb;
+
     // Start is called before the first frame update
     void Start()
     {
