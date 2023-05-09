@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour, LiveObject
+public class PlayerController : MonoBehaviour
 {
     public float walkingSpeed = 2;
     public float runningSpeed = 6;
@@ -14,14 +14,12 @@ public class PlayerController : MonoBehaviour, LiveObject
 
     private bool _isRunning = true;
     private Vector3 movementDirection;
-    private float MaxHP = 2;
-    private float HP;
+    private bool _isAlive = true;
 
     // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 1;
-        HP = MaxHP;
     }
 
     // Update is called once per frame
@@ -46,7 +44,7 @@ public class PlayerController : MonoBehaviour, LiveObject
             GetComponent<Animator>().SetBool("Andando", false);
         }
 
-        if (!IsAlive())
+        if (!_isAlive)
         {
             if (Input.GetButtonDown("Fire1"))
             {
@@ -77,27 +75,9 @@ public class PlayerController : MonoBehaviour, LiveObject
         }
     }
 
-    public bool IsAlive()
+    public void GameOver(float damage)
     {
-        return HP > 0;
-    }
-
-    public void ReceiveDamage(float damage)
-    {
-        HP -= damage;
-        if (HP < 0) HP = 0;
-
-        Debug.Log($"HP = {HP}");
-
-        if (!IsAlive())
-        {
-            GameOverText.SetActive(true);
-        }
-    }
-
-    public void BeHealed(float hitpoints)
-    {
-        HP += hitpoints;
-        if (HP > MaxHP) HP = MaxHP;
+        _isAlive = false;
+        GameOverText.SetActive(true);
     }
 }
