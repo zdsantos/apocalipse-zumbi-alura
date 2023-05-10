@@ -1,28 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ZumbiController : MonoBehaviour
 {
     public GameObject Player;
-    public float ValkingSpeed = 1.2f;
+    public float WalkingSpeed = 1.2f;
     public float VisionRange = 25;
+    public List<AudioClip> AudioClipList;
 
     private Rigidbody rb;
     private Animator animator;
+    private AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
-        ValkingSpeed = Random.Range(1.2f, 4f);
+        WalkingSpeed = Random.Range(1.2f, 4f);
 
         // build a runner, rate 10%
         if(Random.Range(1, 100) <= 10)
         {
             Debug.Log("RUNNER!!!");
-            ValkingSpeed += 2;
+            WalkingSpeed += 2;
         }
+
+        var clipIndex = Random.Range(1, 100) > 8 ? Random.Range(0, 1) : 2;
+
+        var clip = AudioClipList[clipIndex];
+        audioSource.clip = clip;
+        audioSource.volume = clipIndex == 2 ? 0.5f : 0.2f;
+        audioSource.Play();
 
         Player = GameObject.FindWithTag("Player");
 
@@ -50,7 +61,7 @@ public class ZumbiController : MonoBehaviour
         }
         else if (playerDistance > 3)
         {
-            rb.MovePosition(rb.position + (playerDirection * ValkingSpeed * Time.deltaTime));
+            rb.MovePosition(rb.position + (playerDirection * WalkingSpeed * Time.deltaTime));
             SetStatus(ZumbiStatus.Walking);
         }
         else
