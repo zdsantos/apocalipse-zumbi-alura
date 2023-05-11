@@ -10,12 +10,13 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 6;
     public LayerMask GroundMask;
     public GameObject GameOverText;
+    public int HP = 10;
 
     private Rigidbody rb;
     private Animator animator;
     private bool isRunning = true;
     private Vector3 movementDirection;
-    private bool isAlive = true;
+    private bool isAlive => HP > 0;
 
     // Start is called before the first frame update
     void Start()
@@ -78,9 +79,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void GameOver(float damage)
+    public void TakeDamage(int damage)
     {
-        isAlive = false;
-        GameOverText.SetActive(true);
+        Debug.Log("damage taken");
+
+        HP -= damage;
+        
+        if (!isAlive)
+        {
+            Time.timeScale = 0;
+            GameOverText.SetActive(true);
+        }
     }
 }

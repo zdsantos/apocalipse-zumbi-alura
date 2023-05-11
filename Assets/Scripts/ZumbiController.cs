@@ -72,8 +72,7 @@ public class ZumbiController : MonoBehaviour
 
     void AttackPlayer()
     {
-        Time.timeScale = 0;
-        Player.GetComponent<PlayerController>().GameOver(1);
+        Player.GetComponent<PlayerController>().TakeDamage(3);
     }
 
     private void SetStatus(ZumbiStatus status)
